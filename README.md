@@ -5,7 +5,8 @@ This demo is currently using the BBC micro:bit
 
 ## Goals
 * Build binary with just Zig, startup assembly and link scripts
-* Map registers to structs
+* Import/use C header files from SDK
+* Map registers to structs with bit fields
 * Blink LEDs
 * Print over UART
 * Read buttons
