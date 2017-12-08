@@ -68,7 +68,7 @@ __HeapBase:
 __HeapLimit:
     .size __HeapLimit, . - __HeapLimit
 
-    .section .isr_vector
+    .section .isr_vector, "a"
     .align 2
     .globl __isr_vector
 __isr_vector:
@@ -160,11 +160,11 @@ Reset_Handler:
  *
  * All addresses must be aligned to 4 bytes boundary.
  */
-/*    ldr r1, =__etext
+    ldr r1, =__etext
     ldr r2, =__data_start__
     ldr r3, =__bss_start__
 
-    subs r3, r2
+    subs r3, r3, r2
     ble .L_loop1_done
 
 .L_loop1:
@@ -174,7 +174,7 @@ Reset_Handler:
     bgt .L_loop1
 
 .L_loop1_done:
-*/
+
 
 /* This part of work usually is done in C library startup code. Otherwise,
  * define __STARTUP_CLEAR_BSS to enable it in this startup. This section
@@ -186,14 +186,14 @@ Reset_Handler:
  *
  * All addresses must be aligned to 4 bytes boundary.
  */
-/*
+
 #ifdef __STARTUP_CLEAR_BSS
     ldr r1, =__bss_start__
     ldr r2, =__bss_end__
 
     movs r0, 0
 
-    subs r2, r1
+    subs r2, r2, r1
     ble .L_loop3_done
 
 .L_loop3:
@@ -203,7 +203,7 @@ Reset_Handler:
 
 .L_loop3_done:
 #endif
-*/
+
 
 /* Execute SystemInit function. */
     bl SystemInit

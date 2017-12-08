@@ -14,3 +14,5 @@ This demo is currently using the BBC micro:bit
 ## Status
 * Link script does not work with Zig/LLVM
 * Placement of bit fields in struct in not correct (for little-endian)
+* No option for selecting soft/hard float
+* Parts of startup assembly commented out due to issues with assembly
