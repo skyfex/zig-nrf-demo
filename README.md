@@ -12,7 +12,6 @@ This demo is currently using the BBC micro:bit
 * Maybe: read micro:bit accelerometer/compass over I2C
 
 ## Status
-* Link script does not work with Zig/LLVM
+* Linking does not work properly with Zig (does work now with LLD though)
 * Placement of bit fields in struct in not correct (for little-endian)
 * No option for selecting soft/hard float
-* Parts of startup assembly commented out due to issues with assembly
