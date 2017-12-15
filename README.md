@@ -9,7 +9,7 @@ This demo is currently using the BBC micro:bit. Build-scripts made for windows, 
 * X Map registers to structs with bit fields
 * ✓ Blink LEDs
 * ✓ Print over UART
-* X Use std.fmt with UART
+* ✓ Use std.fmt with UART
 * ✓ Handle interrupts
 * X Read buttons
 * ✓ Implement delay functions (inline assembly)
