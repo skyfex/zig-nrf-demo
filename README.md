@@ -1,7 +1,7 @@
 # zig-nrf-demo
-Demonstrate Zig code on the nRF51/nRF52 microcontrollers
+Demonstrate Zig code on the nRF51/nRF52/nRF53 microcontrollers
 
-This demo is currently using the BBC micro:bit. Build-scripts made for windows, but they are just a list of commands, so should work with little/no modification on other OSs.
+This demo is currently using the BBC micro:bit.
 
 ## Goals
 * (X) Build binary with just Zig, startup assembly and link scripts
@@ -21,7 +21,4 @@ This demo is currently using the BBC micro:bit. Build-scripts made for windows, 
 * (X) Maybe: Stack trace
 
 ## Status
-* Linking does not work properly with Zig (does work with LLD though)
-* Placement of bit fields in struct in not correct (for little-endian)
-* Missing functions from compiler_rt needs workaround (\_\_umodsi3)
-* No option for selecting soft/hard float, link issues related to float and zig stdlib
+* Missing functions from compiler_rt needs workaround
