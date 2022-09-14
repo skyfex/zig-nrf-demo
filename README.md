@@ -1,12 +1,17 @@
 # zig-nrf-demo
 Demonstrate Zig code on the nRF51/nRF52/nRF53 microcontrollers
 
-This demo is currently using the BBC micro:bit.
+## Supported Boards
+
+* PCA10040 - nRF52832 DK
+* PCA10056 - nrf52840 DK
+* micro_bit  - micro:bit
+* micro_bit_v2 - micro:bit v2
 
 ## Goals
-* (X) Build binary with just Zig, startup assembly and link scripts
-* (✓) Import/use C header files from SDK
-* (X) Map registers to structs with bit fields
+* (✓) Build binary with just Zig, startup assembly and link scripts
+* (✓) Import/use C header files from MDK
+* (✓) Map registers to structs with bit fields
 * (✓) Blink LEDs
 * (✓) Print over UART
 * (✓) Use std.fmt with UART
