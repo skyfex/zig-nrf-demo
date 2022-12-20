@@ -23,8 +23,8 @@ const ledRow1 = Pin.make(0, 13);
 const ledRow2 = Pin.make(0, 14);
 const ledRow3 = Pin.make(0, 15);
 
-const ledCols = [_]u5{ledCol1, ledCol2, ledCol3, ledCol4, ledCol5, ledCol6, ledCol7, ledCol8, ledCol9};
-const ledRows = [_]u5{ledRow1, ledRow2, ledRow3};
+const ledCols = [_]Pin{ledCol1, ledCol2, ledCol3, ledCol4, ledCol5, ledCol6, ledCol7, ledCol8, ledCol9};
+const ledRows = [_]Pin{ledRow1, ledRow2, ledRow3};
 
 
 // Logical mapping
@@ -48,16 +48,16 @@ pub const leds = [_]Led{led1, led2, led3, led4, led5};
 pub fn init() void {
     // Set all LED pins to output
     for (ledCols++ledRows) |l| {
-        P0.PIN_CNF[l] = .{.DIR = .Output};
+        l.set_PIN_CNF(.{.DIR = .Output});
     }
     // Pull columns high to turn them off
     for (ledCols) |c| {
-        P0.OUTSET = @as(u32,1)<<c;
+        c.set();
     }
     // Pull rows low to turn them off
     for (ledRows) |r| {
-        P0.OUTCLR = @as(u32,1)<<r;
+        r.clear();
     }
     // Turn on row 3 by default for standard board LEDs
-    P0.OUTSET = @as(u32,1)<<ledRow3;
+    ledRow3.set();
 }  

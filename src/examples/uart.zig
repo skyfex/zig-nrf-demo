@@ -1,4 +1,3 @@
-
 usingnamespace @import("startup");
 
 const std = @import("std");
@@ -9,14 +8,8 @@ const board = @import("board");
 pub fn main() void {
     board.init();
     board.led1.on();
-    lib.delay.ms(1000);
+    lib.uart.init(board.uart1_rts, board.uart1_txd, board.uart1_cts, board.uart1_rxd);
     board.led2.on();
-    lib.delay.ms(1000);
+    lib.uart.sendString("Testing\n");
     board.led3.on();
-    lib.delay.ms(1000);
-    board.led4.on();
-    if (@hasDecl(board, "led5")) {
-        lib.delay.ms(1000);
-        board.led5.on();
-    }
 }

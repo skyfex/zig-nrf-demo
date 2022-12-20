@@ -32,11 +32,13 @@ pub const DebugStep = struct {
     pub fn make(step: *Step) !void {
         const self = @fieldParentPtr(DebugStep, "step", step);
 
-        // TODO: Ability to toggle between debug and info?
-        // _ = try std.io.getStdOut().writer().write("\n");
-        std.log.info("nRF-Demo", .{});
-        std.log.info("  Board: {s}", .{@tagName(self.board.id)}); 
-        // _ = try std.io.getStdOut().writer().write("\n");
+        if (false) {
+            // TODO: Ability to toggle between debug and info?
+            // _ = try std.io.getStdOut().writer().write("\n");
+            std.log.debug("nRF-Demo", .{});
+            std.log.debug("  Board: {s}", .{@tagName(self.board.id)}); 
+            // _ = try std.io.getStdOut().writer().write("\n");
+        }
     }
 };
 
@@ -98,6 +100,29 @@ pub fn nrfProgram(b: *std.build.Builder,
     return zdk_steps;
 }
 
+const MultiProgram = struct {
+    all_step: *std.build.Step,
+    prog_step: *std.build.Step,
+    erase_step: *std.build.Step,
+    reset_step: *std.build.Step,
+
+    fn create(b: *std.build.Builder) MultiProgram {
+        return .{
+            .all_step    = b.step("multi", "Demo compiling for multiple devices"),
+            .prog_step   = b.step("multi-prog", "Demo compiling and programming multiple devices"),
+            .erase_step   = b.step("multi-erase", "Erase multiple devices"),
+            .reset_step  = b.step("multi-reset", "Reset multiple devices"),
+        };
+    }
+
+    fn addProgram(self: *MultiProgram, p: zdk_build.ZdkSteps) void {
+        self.all_step.dependOn(p.all);
+        self.prog_step.dependOn(p.prog);
+        self.erase_step.dependOn(p.erase);
+        self.reset_step.dependOn(p.reset);
+    }
+};
+
 pub fn build(b: *std.build.Builder) !void {
 
     try zdk_build.build(b);
@@ -124,24 +149,15 @@ pub fn build(b: *std.build.Builder) !void {
     _ = nrfProgram(b, nrf_p, .{.name="asyncTimer" });
     _ = nrfProgram(b, nrf_p, .{.name="timer"      });
     _ = nrfProgram(b, nrf_p, .{.name="microbit"   });
+    _ = nrfProgram(b, nrf_p, .{.name="uart"       });
 
-    const multi      = b.step("multi", "Demo compiling for multiple devices");
-    const multi_prog = b.step("multi-prog", "Demo compiling and programming multiple devices");
-    const multi_reset = b.step("multi-reset", "Reset multiple devices");
 
-    const led_1 = nrfProgram(b, .{.board=.PCA10040}, .{.name="led_1", .root_src="./src/examples/led.zig", .serial_number="682566997"}); 
-    multi.dependOn(led_1.all);
-    multi_prog.dependOn(led_1.prog);
-    multi_reset.dependOn(led_1.reset);
-
-    const led_2 = nrfProgram(b, .{.board=.PCA10056}, .{.name="led_2", .root_src="./src/examples/led.zig", .serial_number="683655956"}); 
-    multi.dependOn(led_2.all);
-    multi_reset.dependOn(led_2.reset);
-
-    // dbg.dependOn(&dbg_step.step);
-    // exe.step.dependOn(&dbg_step.step);
-    // nrfProgram(b, nrf_p, .{.name="microbit"   });
-
+    var multi = MultiProgram.create(b);
+    multi.addProgram(nrfProgram(b, .{.board=.PCA10040}, .{.name="led_1", .root_src="./src/examples/led.zig", .serial_number="682566997"}));
+    multi.addProgram(nrfProgram(b, .{.board=.PCA10056}, .{.name="led_2", .root_src="./src/examples/led.zig", .serial_number="683655956"}));
+    multi.addProgram(nrfProgram(b, .{.board=.PCA10095}, .{.name="led_2", .root_src="./src/examples/led.zig", .serial_number="960158190"}));
+    multi.addProgram(nrfProgram(b, .{.board=.microbit}, .{.name="led_3", .root_src="./src/examples/led.zig", .serial_number="780953366"}));
+    multi.addProgram(nrfProgram(b, .{.board=.microbit_v2}, .{.name="led_3", .root_src="./src/examples/led.zig", .serial_number="782097444"}));
 
 }
 

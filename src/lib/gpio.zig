@@ -34,6 +34,15 @@ pub const Pin = packed struct {
     pub fn out(self: Pin, val: u1) void {
         self.getPort().OUTCLR = @as(u32,val)<<self.pin;
     }
+
+    pub fn pselValue(self: Pin) nrf.common.PselReg {
+        return .{
+            .PIN = self.pin,
+            // TODO: Cleaner way to get type of PORT field?
+            .PORT = @intCast(@TypeOf(self.pselValue().PORT), self.port),
+            .CONNECT = .Connected
+        };
+    }
 };
 
 pub fn getPort(port_num: usize) *volatile nrf.GPIO_Type {

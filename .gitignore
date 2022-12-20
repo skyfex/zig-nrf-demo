@@ -4,3 +4,4 @@
 *.dis
 zig-out
 zig-cache
+env.ps1
