@@ -8,6 +8,15 @@ const boards = @import("./src/boards.zig");
 
 const zdkPath = "./zdk";
 
+fn getPackage(exe_step: *std.build.LibExeObjStep, name: []const u8) ?std.build.Pkg {
+    for (exe_step.packages.items) |pkg| {
+        if (std.mem.eql(u8, pkg.name, name)) {
+            return pkg;
+        }    
+    }
+    return null;
+} 
+
 //  DebugStep
 // ===========================================
 // Print debug messages before building NRF programs    
@@ -80,7 +89,8 @@ pub fn nrfProgram(b: *std.build.Builder,
     //         break pkg;
     //     }
     // } else null;
-    if (exe.getPackage("nrf")) |nrf_pkg| {
+
+    if (getPackage(exe, "nrf")) |nrf_pkg| {
         // std.log.info("Got nrf package", .{});
         const nrf_lib_pkg = std.build.Pkg{
                 .name = "nrf_lib",
@@ -152,12 +162,12 @@ pub fn build(b: *std.build.Builder) !void {
     _ = nrfProgram(b, nrf_p, .{.name="uart"       });
 
 
-    var multi = MultiProgram.create(b);
-    multi.addProgram(nrfProgram(b, .{.board=.PCA10040}, .{.name="led_1", .root_src="./src/examples/led.zig", .serial_number="682566997"}));
-    multi.addProgram(nrfProgram(b, .{.board=.PCA10056}, .{.name="led_2", .root_src="./src/examples/led.zig", .serial_number="683655956"}));
-    multi.addProgram(nrfProgram(b, .{.board=.PCA10095}, .{.name="led_2", .root_src="./src/examples/led.zig", .serial_number="960158190"}));
-    multi.addProgram(nrfProgram(b, .{.board=.microbit}, .{.name="led_3", .root_src="./src/examples/led.zig", .serial_number="780953366"}));
-    multi.addProgram(nrfProgram(b, .{.board=.microbit_v2}, .{.name="led_3", .root_src="./src/examples/led.zig", .serial_number="782097444"}));
+    // var multi = MultiProgram.create(b);
+    // multi.addProgram(nrfProgram(b, .{.board=.PCA10040}, .{.name="led_1", .root_src="./src/examples/led.zig", .serial_number="682566997"}));
+    // multi.addProgram(nrfProgram(b, .{.board=.PCA10056}, .{.name="led_2", .root_src="./src/examples/led.zig", .serial_number="683655956"}));
+    // multi.addProgram(nrfProgram(b, .{.board=.PCA10095}, .{.name="led_2", .root_src="./src/examples/led.zig", .serial_number="960158190"}));
+    // multi.addProgram(nrfProgram(b, .{.board=.microbit}, .{.name="led_3", .root_src="./src/examples/led.zig", .serial_number="780953366"}));
+    // multi.addProgram(nrfProgram(b, .{.board=.microbit_v2}, .{.name="led_3", .root_src="./src/examples/led.zig", .serial_number="782097444"}));
 
 }
 
