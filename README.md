@@ -1,6 +1,8 @@
 # zig-nrf-demo
 Demonstrate Zig code on the nRF51/nRF52/nRF53 microcontrollers
 
+NOTE: This project is quite old, it may have significant issues with newer versions of Zig
+
 ## Supported Boards
 
 * PCA10040 - nRF52832 DK
